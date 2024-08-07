@@ -22,47 +22,53 @@
 
     <script>
       function info(txt) {
-        return (document.querySelector("#info").innerHTML = txt);
+        document.getElementById("info").innerHTML = txt;
       }
 
       function debug(msg) {
-        debugMode ? console.log(msg) : null;
+        if (debugMode) {
+          console.log(msg);
+        }
       }
 
       const url = new URL(window.location.href);
 
       let songID = url.searchParams.get("watch?v");
       let listID = url.searchParams.get("list");
-      let title = url.searchParams.get("title") == "true" ? true : false;
-      let volume = url.searchParams.get("volume") || 45;
-      let width = url.searchParams.get("w") || 534;
-      let height = url.searchParams.get("h") || 300;
+      let title = url.searchParams.get("title") === "true";
+      let volume = parseInt(url.searchParams.get("volume")) || 45;
+      let width = parseInt(url.searchParams.get("w")) || 534;
+      let height = parseInt(url.searchParams.get("h")) || 300;
       let quality = url.searchParams.get("quality") || "default";
-      let forceQuality = url.searchParams.get("forcequality") == "true" ? true : false;
-      let speed = url.searchParams.get('speed') || 1;
-      let startSeconds = url.searchParams.get("t") || 0;
-      let index = url.searchParams.get("index") || 0;
-      let random = url.searchParams.get("random") == "true" ? true : false;
-      let loop = url.searchParams.get("loop") == "false" ? false : true;
-      let fade = url.searchParams.get("fade") == "true" ? true : false;
-      let debugMode = url.searchParams.get("debug") == "true" ? true : false;
-      let hide = url.searchParams.get("hide") == "true" ? true : false;
-      let hideWhenStopped = url.searchParams.get('hideWhenStopped') == "true" ? true : false;
-      let controls = url.searchParams.get('controls') == "true" ? true : false;
+      let forceQuality = url.searchParams.get("forcequality") === "true";
+      let speed = parseFloat(url.searchParams.get('speed')) || 1;
+      let startSeconds = parseInt(url.searchParams.get("t")) || 0;
+      let index = parseInt(url.searchParams.get("index")) || 0;
+      let random = url.searchParams.get("random") === "true";
+      let loop = url.searchParams.get("loop") !== "false";
+      let fade = url.searchParams.get("fade") === "true";
+      let debugMode = url.searchParams.get("debug") !== "true";
+      let hide = url.searchParams.get("hide") === "true";
+      let hideWhenStopped = url.searchParams.get('hideWhenStopped') === "true";
+      let controls = url.searchParams.get('controls') === "true";
 
       // Hide/Show the title area
-      hide ? (document.querySelector("#player").style.display = "none") : null;
+      if (hide) {
+        document.getElementById("player").style.display = "none";
+      }
 
       debug(`insert : videoID = ${songID} | listID = ${listID}`);
 
+      let player;
+
       function onYouTubeIframeAPIReady() {
-        const player = new YT.Player("player", {
+        player = new YT.Player("player", {
           width: width,
           height: height,
 
           playerVars: {
             autoplay: 1, // Auto-play the video on load
-            controls: controls === true ? 1 : 0, // Toggle pause/play buttons in player
+            controls: controls ? 1 : 0, // Toggle pause/play buttons in player
             showinfo: 0, // Hide the video title
             modestbranding: 1, // Hide the Youtube Logo
             playinline: 1,
@@ -105,16 +111,13 @@
                 player.cuePlaylist({ list: listID });
               }
             });
-          }
-
-          if (!songID && listID) {
+          } else if (!songID && listID) {
             debug("Playlist only detected");
             // Remark: (HoPollo) : YT playlists seems to be flushed by default, event starting with de same index, the video is different
 
             player.loadPlaylist({ list: listID, index });
-          }
-
-          if (songID && !listID) {
+            player.setShuffle(random);
+          } else if (songID && !listID) {
             debug("Song only detected");
             player.cueVideoById({ videoId: songID });
           }
@@ -131,12 +134,16 @@
               if (listID && loop) {
                 player.cuePlaylist({ list: listID, index })
               }
-              hideWhenStopped && (document.querySelector("#container").style.display = "none");
+              if (hideWhenStopped) {
+                document.getElementById("container").style.display = "none";
+              }
               break;
             case 1: // Playing
-              document.querySelector("#info").innerHTML = "";
+              info("");
               debug("Playing... ");
-              hideWhenStopped && (document.querySelector("#container").style.display = "block");
+              if (hideWhenStopped) {
+                document.getElementById("container").style.display = "block";
+              }
               onAir();
               break;
             case 2: // Pause
@@ -195,7 +202,9 @@
               forceQuality ? ", trying to force it back" : ""
             }`
           );
-          forceQuality && player.setPlaybackQuality(quality);
+          if (forceQuality) {
+            player.setPlaybackQuality(quality);
+          }
         }
 
         function onPlaybackRateChange() {
@@ -231,7 +240,7 @@
           HideWhenStopped => ${hideWhenStopped}
           Controls        => ${controls}`);
 
-          if (title) document.getElementById('info').innerHTML = `<span id="songTitle">${player.playerInfo.videoData.title}</span> <span id="songAuthor">${player.playerInfo.videoData.author}</span>`;
+          if (title) info(`<span id="songTitle">${player.playerInfo.videoData.title}</span> <span id="songAuthor">${player.playerInfo.videoData.author}</span>`);
 
           player.playVideo();
 
