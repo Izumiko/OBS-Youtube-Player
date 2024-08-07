@@ -2,20 +2,20 @@
 
 Designed for OBS Browser source to display/play a song/playlist fully automaticly with customs fixed params.
 
-## Usage : add ? at the end of the link and copy Youtube link from "watch?v=XXXXX" or "watch?v=XXXXX&list=XXXXX")
+## Usage : add ? at the end of the link and copy Youtube link from "v=XXXXX" or "v=XXXXX&list=XXXXX")
 
-exemple : https://hopollo.github.io/OBS-Youtube-Player/?watch?v=lSqnqSSXTUI&list=RDlSqnqSSXTUI&volume=10&random=true&loop=true
+exemple : https://izumiko.github.io/OBS-Youtube-Player/?v=lSqnqSSXTUI&list=RDlSqnqSSXTUI&volume=10&random=true&loop=true
 
 ## Tutorial (video with subtitles instructions): https://youtu.be/y8VerA88A6U
 
 ## Features :
 
-**volume :** Volume of the video player : &volume=VALUE (0 to 100, default is 45)\
- **w :** Width of the video player : &w=VALUE (default is 535) \
- **h :** Height of the video player : &h=VALUE (default is 300)\
+**volume :** Volume of the video player : &volume=VALUE (0 to 100, default is 100)\
+ **w :** Width of the video player : &w=VALUE (default is 1920) \
+ **h :** Height of the video player : &h=VALUE (default is 1080)\
  **hide :** Hide the video player : &hide=true|false (default is false)\
  **hideWhenStopped :** Hide all when video stops : &hideWhenStopped=true|false (default is false)\
- **quality :** Video quality of the player : &quality=small|medium|large|hd720|hd1080|highres|default (default is default)\
+ **quality :** Video quality of the player : &quality=small|medium|large|hd720|hd1080|highres|default (default is highres)\
  **forcequality :** Enforce choosen video quality : &forcequality=true|false (default is false)\
  **speed :** Video speed of the player : &speed=0.2|0.5|1|1.25|1.5|2|any number (default is 1)\
  **t :** Start the video at desired time in seconds : &t=15 (default is 0)\

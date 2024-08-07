@@ -33,13 +33,13 @@
 
       const url = new URL(window.location.href);
 
-      let songID = url.searchParams.get("watch?v");
+      let songID = url.searchParams.get("v");
       let listID = url.searchParams.get("list");
       let title = url.searchParams.get("title") === "true";
-      let volume = parseInt(url.searchParams.get("volume")) || 45;
-      let width = parseInt(url.searchParams.get("w")) || 534;
-      let height = parseInt(url.searchParams.get("h")) || 300;
-      let quality = url.searchParams.get("quality") || "default";
+      let volume = parseInt(url.searchParams.get("volume")) || 100;
+      let width = parseInt(url.searchParams.get("w")) || 1920;
+      let height = parseInt(url.searchParams.get("h")) || 1080;
+      let quality = url.searchParams.get("quality") || "highres";
       let forceQuality = url.searchParams.get("forcequality") === "true";
       let speed = parseFloat(url.searchParams.get('speed')) || 1;
       let startSeconds = parseInt(url.searchParams.get("t")) || 0;
